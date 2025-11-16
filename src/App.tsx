@@ -9,7 +9,7 @@ import { Hosting } from './pages/Hosting';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={__BASE_PATH__}>
       <Routes>
         <Route path="/signin" element={<SignIn />} />
         <Route
