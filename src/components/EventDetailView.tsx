@@ -5,27 +5,30 @@ import type { EventCardProps } from './EventCard';
 
 interface EventDetailViewProps {
   event: EventCardProps;
-  onBack: () => void;
+  onBack?: () => void;
 }
 
 export function EventDetailView({ event, onBack }: EventDetailViewProps) {
   return (
-    <div className="h-full p-4 flex flex-col">
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.2 }}
-      >
-        <Button
-          variant="ghost"
-          onClick={onBack}
-          className="mb-4"
+    <div className="h-full flex flex-col">
+      {onBack && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.2 }}
+          className="p-4 pb-0"
         >
-          <ArrowLeft size={20} />
-          Back to events
-        </Button>
-      </motion.div>
+          <Button
+            variant="ghost"
+            onClick={onBack}
+            className="mb-4"
+          >
+            <ArrowLeft size={20} />
+            Back to events
+          </Button>
+        </motion.div>
+      )}
 
       <Card asChild className="overflow-hidden flex-1">
         <motion.div
