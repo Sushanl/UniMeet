@@ -8,6 +8,8 @@ export interface EventCardProps {
   date: string;
   time: string;
   location: string;
+  latitude: number;
+  longitude: number;
   attendees: number;
   tags: string[];
 }

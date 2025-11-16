@@ -1,33 +1,59 @@
 import './App.css';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Header } from './components/Header';
-import { MainLayout } from './components/MainLayout';
 import { SignIn } from './components/SignIn';
-import { useAuth } from './lib/authContext';
-import type { EventCardProps } from './components/EventCard';
-import { mockEvents } from './mockdata/mockEvents';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { Home } from './pages/Home';
+import { Events } from './pages/Events';
+import { Communities } from './pages/Communities';
 
 function App() {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-white">
-        <div className="text-black">Loading...</div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return <SignIn />;
-  }
-
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
-      <Header />
-      <div className="flex-1 overflow-hidden">
-        <MainLayout events={mockEvents} />
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/signin" element={<SignIn />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <div className="h-screen flex flex-col overflow-hidden">
+                <Header />
+                <div className="flex-1 overflow-hidden">
+                  <Home />
+                </div>
+              </div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/events"
+          element={
+            <ProtectedRoute>
+              <div className="h-screen flex flex-col overflow-hidden">
+                <Header />
+                <div className="flex-1 overflow-auto">
+                  <Events />
+                </div>
+              </div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/communities"
+          element={
+            <ProtectedRoute>
+              <div className="h-screen flex flex-col overflow-hidden">
+                <Header />
+                <div className="flex-1 overflow-auto">
+                  <Communities />
+                </div>
+              </div>
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

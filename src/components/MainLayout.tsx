@@ -13,7 +13,7 @@ export function MainLayout({ events }: MainLayoutProps) {
         <EventSidebar events={events} />
       </div>
       <div className="flex-1">
-        <MapPlaceholder />
+        <MapPlaceholder events={events} />
       </div>
     </div>
   );
