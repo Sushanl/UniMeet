@@ -11,7 +11,8 @@ export const mockEvents: EventCardProps[] = [
     latitude: 37.8015,
     longitude: -122.4015,
     attendees: 12,
-    tags: ['Social', 'Coffee']
+    tags: ['Social', 'Coffee'],
+    eventType: 'social'
   },
   {
     id: '2',
@@ -23,7 +24,8 @@ export const mockEvents: EventCardProps[] = [
     latitude: 37.8025,
     longitude: -122.4025,
     attendees: 8,
-    tags: ['Study', 'CS']
+    tags: ['Study', 'CS'],
+    eventType: 'study'
   },
   {
     id: '3',
@@ -35,7 +37,8 @@ export const mockEvents: EventCardProps[] = [
     latitude: 37.7995,
     longitude: -122.4005,
     attendees: 15,
-    tags: ['Sports', 'Basketball']
+    tags: ['Sports', 'Basketball'],
+    eventType: 'sports'
   },
   {
     id: '4',
@@ -47,7 +50,8 @@ export const mockEvents: EventCardProps[] = [
     latitude: 37.8005,
     longitude: -122.3995,
     attendees: 25,
-    tags: ['Club', 'Engineering']
+    tags: ['Club', 'Engineering'],
+    eventType: 'club'
   },
   {
     id: '5',
@@ -59,6 +63,7 @@ export const mockEvents: EventCardProps[] = [
     latitude: 37.8035,
     longitude: -122.4035,
     attendees: 45,
-    tags: ['Entertainment', 'Music']
+    tags: ['Entertainment', 'Music'],
+    eventType: 'entertainment'
   }
 ];
