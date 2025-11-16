@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, TextField, Card, Heading, Text } from '@radix-ui/themes'
+import { Button, TextField, Heading, Text } from '@radix-ui/themes'
 import { useAuth } from '../lib/useAuth'
+import { AnimatedEventIcons } from './AnimatedEventIcons'
+import { Calendar } from 'lucide-react'
 
 export function SignIn() {
   const navigate = useNavigate()
@@ -49,93 +51,134 @@ export function SignIn() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen p-4 bg-gray-50">
-      <Card className="w-full max-w-md p-6 bg-white">
-        <Heading size="6" mb="4">{isSignUp ? 'Create Account' : 'Sign In'}</Heading>
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '1rem' }}>
-            <Text size="2" weight="medium" mb="2" as="div">Email</Text>
-            <TextField.Root
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-              size="3"
-            />
+    <div className="flex min-h-screen">
+      {/* Left Column - Sign In Form */}
+      <div className="flex-1 flex items-center justify-center p-8 bg-white">
+        <div className="w-full max-w-md">
+          {/* Logo */}
+          <div className="mb-8">
+            <div className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center mb-8">
+              <Calendar className="w-6 h-6 text-white" />
+            </div>
+            <Heading size="8" mb="2">Get Started</Heading>
+            <Text size="3" color="gray">
+              Sign in to get unlimited design request access
+            </Text>
           </div>
 
-          <div style={{ marginBottom: '1rem' }}>
-            <Text size="2" weight="medium" mb="2" as="div">Password</Text>
-            <TextField.Root
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-              size="3"
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Text size="2" weight="medium" mb="2" as="div">Email</Text>
+              <TextField.Root
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="mail@example.com"
+                required
+                size="3"
+              />
+            </div>
 
-          {isSignUp && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <Text size="2" weight="medium" mb="2" as="div">Confirm Password</Text>
+            <div>
+              <Text size="2" weight="medium" mb="2" as="div">Password</Text>
               <TextField.Root
                 type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
                 size="3"
               />
             </div>
-          )}
 
-          {error && (
-            <Text size="2" color="red" mb="3" as="div">
-              {error}
-            </Text>
-          )}
+            {isSignUp && (
+              <div>
+                <Text size="2" weight="medium" mb="2" as="div">Confirm Password</Text>
+                <TextField.Root
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  size="3"
+                />
+              </div>
+            )}
 
-          {successMessage && (
-            <Text size="2" color="green" mb="3" as="div">
-              {successMessage}
-            </Text>
-          )}
+            {error && (
+              <Text size="2" color="red" as="div">
+                {error}
+              </Text>
+            )}
 
-          <Button type="submit" size="3" style={{ width: '100%' }} disabled={loading}>
-            {loading 
-              ? (isSignUp ? 'Creating account...' : 'Signing in...') 
-              : (isSignUp ? 'Create Account' : 'Sign In')
-            }
-          </Button>
+            {successMessage && (
+              <Text size="2" color="green" as="div">
+                {successMessage}
+              </Text>
+            )}
 
-          <div style={{ marginTop: '1rem', textAlign: 'center' }}>
-            <Text size="2" as="div">
-              {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
-              <button
-                type="button"
-                onClick={() => {
-                  setIsSignUp(!isSignUp)
-                  setError(null)
-                  setSuccessMessage(null)
-                  setPassword('')
-                  setConfirmPassword('')
-                }}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--accent-9)',
-                  cursor: 'pointer',
-                  textDecoration: 'underline'
-                }}
-              >
-                {isSignUp ? 'Sign in' : 'Sign up'}
-              </button>
-            </Text>
+            <Button type="submit" size="3" style={{ width: '100%' }} disabled={loading}>
+              {loading
+                ? (isSignUp ? 'Creating account...' : 'Signing in...')
+                : (isSignUp ? 'Sign Up' : 'Sign In')
+              }
+            </Button>
+
+            <div className="text-center pt-4">
+              <Text size="2" color="gray">
+                By clicking continue, you agree to our{' '}
+                <a href="#" className="text-gray-900 underline">Terms and Conditions</a>
+                {' '}and{' '}
+                <a href="#" className="text-gray-900 underline">Privacy Policy</a>
+              </Text>
+            </div>
+
+            <div className="text-center pt-2">
+              <Text size="2">
+                {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsSignUp(!isSignUp)
+                    setError(null)
+                    setSuccessMessage(null)
+                    setPassword('')
+                    setConfirmPassword('')
+                  }}
+                  className="text-blue-600 hover:text-blue-700 font-medium underline"
+                >
+                  {isSignUp ? 'Sign in' : 'Sign up'}
+                </button>
+              </Text>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {/* Right Column - Animated Icons */}
+      <div className="flex-1 relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-700">
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-white">
+          <div className="mb-12 h-96">
+            <AnimatedEventIcons />
           </div>
-        </form>
-      </Card>
+
+          <div className="text-center max-w-md">
+            <Heading size="8" mb="4" className="text-white">
+              Discover Events in Your Area
+            </Heading>
+            <Text size="4" className="text-white/90">
+              UniMeet connects you with exciting events happening around campus.
+              From study groups to social gatherings, find activities that match your interests.
+            </Text>
+
+            <div className="flex gap-2 justify-center mt-8">
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+              <div className="w-2 h-2 bg-white/50 rounded-full"></div>
+              <div className="w-2 h-2 bg-white/50 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
