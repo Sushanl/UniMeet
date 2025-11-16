@@ -5,9 +5,10 @@ import { useRef } from 'react';
 
 interface MainLayoutProps {
   events: EventCardProps[];
+  onEventsUpdate?: () => void;
 }
 
-export function MainLayout({ events }: MainLayoutProps) {
+export function MainLayout({ events, onEventsUpdate }: MainLayoutProps) {
   const sidebarRef = useRef<EventSidebarRef>(null);
 
   const handleMarkerClick = (eventId: string) => {
@@ -17,7 +18,7 @@ export function MainLayout({ events }: MainLayoutProps) {
   return (
     <div className="flex h-full w-full">
       <div className="w-2/5 flex-shrink-0">
-        <EventSidebar ref={sidebarRef} events={events} />
+        <EventSidebar ref={sidebarRef} events={events} onEventsUpdate={onEventsUpdate} />
       </div>
       <div className="flex-1">
         <OSMMap events={events} onMarkerClick={handleMarkerClick} />
