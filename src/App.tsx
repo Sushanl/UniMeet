@@ -3,7 +3,6 @@ import { Header } from './components/Header';
 import { MainLayout } from './components/MainLayout';
 import { SignIn } from './components/SignIn';
 import { useAuth } from './lib/authContext';
-import type { EventCardProps } from './components/EventCard';
 import { mockEvents } from './mockdata/mockEvents';
 
 function App() {

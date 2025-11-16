@@ -8,6 +8,8 @@ export const mockEvents: EventCardProps[] = [
     date: 'Nov 18',
     time: '10:00 AM',
     location: 'Student Center Cafe',
+    latitude: 37.8015,
+    longitude: -122.4015,
     attendees: 12,
     tags: ['Social', 'Coffee']
   },
@@ -18,6 +20,8 @@ export const mockEvents: EventCardProps[] = [
     date: 'Nov 18',
     time: '2:00 PM',
     location: 'Library Room 204',
+    latitude: 37.8025,
+    longitude: -122.4025,
     attendees: 8,
     tags: ['Study', 'CS']
   },
@@ -28,6 +32,8 @@ export const mockEvents: EventCardProps[] = [
     date: 'Nov 19',
     time: '5:00 PM',
     location: 'Recreation Center',
+    latitude: 37.7995,
+    longitude: -122.4005,
     attendees: 15,
     tags: ['Sports', 'Basketball']
   },
@@ -38,6 +44,8 @@ export const mockEvents: EventCardProps[] = [
     date: 'Nov 20',
     time: '6:00 PM',
     location: 'Engineering Building 301',
+    latitude: 37.8005,
+    longitude: -122.3995,
     attendees: 25,
     tags: ['Club', 'Engineering']
   },
@@ -48,6 +56,8 @@ export const mockEvents: EventCardProps[] = [
     date: 'Nov 21',
     time: '7:30 PM',
     location: 'Campus Auditorium',
+    latitude: 37.8035,
+    longitude: -122.4035,
     attendees: 45,
     tags: ['Entertainment', 'Music']
   }
