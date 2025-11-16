@@ -12,14 +12,14 @@ export function Header() {
 
           <nav>
             <Flex gap="6" className="ml-8">
-              <a href="#" className="text-gray-700 hover:text-gray-900 font-medium">
+              <a href="/" className="text-gray-700 hover:text-gray-900 font-medium">
                 Events
               </a>
-              <a href="#" className="text-gray-700 hover:text-gray-900 font-medium">
-                Communities
+              <a href="/attending" className="text-gray-700 hover:text-gray-900 font-medium">
+                Attending
               </a>
-              <a href="#" className="text-gray-700 hover:text-gray-900 font-medium">
-                Messages
+              <a href="/hosting" className="text-gray-700 hover:text-gray-900 font-medium">
+                Hosting
               </a>
             </Flex>
           </nav>

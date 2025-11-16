@@ -13,6 +13,7 @@
     "@radix-ui/themes": "^3.2.1",
     "@supabase/supabase-js": "^2.81.1",
     "@tailwindcss/vite": "^4.1.17",
+    "framer-motion": "^12.23.24",
     "lucide": "^0.553.0",
     "lucide-react": "^0.553.0",
     "maplibre-gl": "^5.13.0",
