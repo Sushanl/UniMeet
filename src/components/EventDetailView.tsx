@@ -35,7 +35,10 @@ export function EventDetailView({ event, onBack }: EventDetailViewProps) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              duration: 0.1
+            }}
           >
             <div className="aspect-video w-full overflow-hidden bg-gray-200">
               <img
@@ -44,24 +47,12 @@ export function EventDetailView({ event, onBack }: EventDetailViewProps) {
                 className="w-full h-full object-cover"
               />
             </div>
-          </motion.div>
 
-          <div className="p-6">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.35 }}
-            >
+            <div className="p-6">
               <Text size="7" weight="bold" className="block mb-6">
                 {event.title}
               </Text>
-            </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.45 }}
-            >
               <Flex direction="column" gap="4" className="mb-6">
                 <Flex align="center" gap="3">
                   <Calendar size={20} className="text-gray-500" />
@@ -91,13 +82,7 @@ export function EventDetailView({ event, onBack }: EventDetailViewProps) {
                   </Text>
                 </Flex>
               </Flex>
-            </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.55 }}
-            >
               <div className="mb-6">
                 <Text size="3" weight="medium" className="block mb-3 text-gray-900">
                   Tags
@@ -110,13 +95,7 @@ export function EventDetailView({ event, onBack }: EventDetailViewProps) {
                   ))}
                 </Flex>
               </div>
-            </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.65 }}
-            >
               <div>
                 <Text size="3" weight="medium" className="block mb-3 text-gray-900">
                   About this event
@@ -128,8 +107,8 @@ export function EventDetailView({ event, onBack }: EventDetailViewProps) {
                   details that attendees should know.
                 </Text>
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </motion.div>
       </Card>
     </div>

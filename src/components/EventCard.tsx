@@ -31,9 +31,13 @@ export function EventCard({
     <Card asChild className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer">
       <motion.div layoutId={`event-${id}`} onClick={onClick}>
         <motion.div
-          initial={false}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.00 }}
+          transition={{
+            duration: 0.10,
+            delay: 0.05
+          }}
         >
           <div className="aspect-video w-full overflow-hidden bg-gray-200">
             <img
