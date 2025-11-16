@@ -1,4 +1,3 @@
-import { Flex } from '@radix-ui/themes';
 import { EventCard } from './EventCard';
 import type { EventCardProps } from './EventCard';
 import { forwardRef, useImperativeHandle, useRef, useState, useEffect } from 'react';
@@ -43,7 +42,7 @@ export const EventSidebar = forwardRef<EventSidebarRef, EventSidebarProps>(({ ev
   return (
     <aside className="w-full h-full overflow-y-auto bg-gray-50 border-r border-gray-200">
       <div className="p-4">
-        <Flex direction="column" gap="4">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           {events.map((event) => (
             <EventCard
               key={event.id}
@@ -58,7 +57,7 @@ export const EventSidebar = forwardRef<EventSidebarRef, EventSidebarProps>(({ ev
               isHighlighted={highlightedEventId === event.id}
             />
           ))}
-        </Flex>
+        </div>
       </div>
     </aside>
   );
