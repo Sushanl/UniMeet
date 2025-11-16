@@ -12,8 +12,8 @@ export function OSMMap({ events = [], onMarkerClick }: MapPlaceholderProps) {
   return (
     <Map
       initialViewState={{
-        longitude: -122.4,
-        latitude: 37.8,
+        longitude: -123.2460,
+        latitude: 49.2606,
         zoom: 14
       }}
       style={{ width: '100%', height: '100%' }}
