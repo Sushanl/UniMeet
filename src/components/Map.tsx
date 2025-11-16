@@ -7,7 +7,7 @@ interface MapPlaceholderProps {
   events?: EventCardProps[];
 }
 
-export function MapPlaceholder({ events = [] }: MapPlaceholderProps) {
+export function OSMMap({ events = [] }: MapPlaceholderProps) {
   return (
     <Map
       initialViewState={{

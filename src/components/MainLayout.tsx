@@ -1,5 +1,5 @@
 import { EventSidebar } from './EventSidebar';
-import { MapPlaceholder } from './MapPlaceholder';
+import { OSMMap } from './Map';
 import type { EventCardProps } from './EventCard';
 
 interface MainLayoutProps {
@@ -13,7 +13,7 @@ export function MainLayout({ events }: MainLayoutProps) {
         <EventSidebar events={events} />
       </div>
       <div className="flex-1">
-        <MapPlaceholder events={events} />
+        <OSMMap events={events} />
       </div>
     </div>
   );
