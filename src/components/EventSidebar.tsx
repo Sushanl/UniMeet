@@ -14,7 +14,7 @@ export interface EventSidebarRef {
   scrollToEvent: (eventId: string) => void;
 }
 
-export const EventSidebar = forwardRef<EventSidebarRef, EventSidebarProps>(({ events, onEventsUpdate }, ref) => {
+export const EventSidebar = forwardRef<EventSidebarRef, EventSidebarProps>(({ events }, ref) => {
   const eventRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventCardProps | null>(null);
@@ -43,7 +43,9 @@ export const EventSidebar = forwardRef<EventSidebarRef, EventSidebarProps>(({ ev
         eventRefs.current.delete(id);
       }
     });
-    
+  }, [events]);
+
+  useEffect(() => {
     // DO NOT update selectedEvent when events change if user is viewing detail
     // This prevents navigation glitches
     if (selectedEvent && !isInDetailView.current) {
@@ -52,6 +54,7 @@ export const EventSidebar = forwardRef<EventSidebarRef, EventSidebarProps>(({ ev
         setSelectedEvent(updatedEvent);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events]);
   
   // Track when we're in detail view
