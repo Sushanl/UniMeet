@@ -149,12 +149,11 @@ export function Attending() {
       <div className="flex-1 flex gap-6 px-8 pb-8 overflow-hidden">
         {/* Grid View - Left Side */}
         <div className="w-1/2 overflow-y-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             {events.map((event) => (
               <div key={event.id}>
                 <EventCard
                   {...event}
-                  isHighlighted={selectedEvent?.id === event.id}
                   onClick={() => setSelectedEvent(event)}
                 />
               </div>
