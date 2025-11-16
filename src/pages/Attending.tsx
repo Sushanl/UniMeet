@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../lib/useAuth'
 import { supabase } from '../lib/supabaseClient'
 import { EventCard, type EventCardProps, type EventType } from '../components/EventCard'
-import { EventDetailView } from '../components/EventDetailView'
 import { useNavigate } from 'react-router-dom'
 import { Text } from '@radix-ui/themes'
 
@@ -10,7 +9,6 @@ export function Attending() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [events, setEvents] = useState<EventCardProps[]>([])
-  const [selectedEvent, setSelectedEvent] = useState<EventCardProps | null>(null)
   const [loading, setLoading] = useState(true)
 
   const fetchEvents = useCallback(async () => {
@@ -32,7 +30,6 @@ export function Attending() {
 
       if (!attendeesData || attendeesData.length === 0) {
         setEvents([])
-        setSelectedEvent(null)
         setLoading(false)
         return
       }
@@ -54,7 +51,6 @@ export function Attending() {
 
       if (!eventsData || eventsData.length === 0) {
         setEvents([])
-        setSelectedEvent(null)
         setLoading(false)
         return
       }
@@ -100,10 +96,6 @@ export function Attending() {
       })
 
       setEvents(transformedEvents)
-      // Set the first event as selected by default
-      if (transformedEvents.length > 0) {
-        setSelectedEvent(transformedEvents[0])
-      }
     } catch (error) {
       console.error('Error fetching events:', error)
     } finally {
@@ -141,30 +133,15 @@ export function Attending() {
   }
 
   return (
-    <div className="h-screen flex flex-col">
-      <div className="p-8 pb-4">
-        <h1 className="text-3xl font-bold">Attending</h1>
-      </div>
+    <div className="p-8">
+      <h1 className="text-3xl font-bold mb-6">Attending</h1>
 
-      <div className="flex-1 flex gap-6 px-8 pb-8 overflow-hidden">
-        {/* Grid View - Left Side */}
-        <div className="w-1/2 overflow-y-auto">
-          <div className="grid grid-cols-1 gap-4">
-            {events.map((event) => (
-              <div key={event.id}>
-                <EventCard
-                  {...event}
-                  onClick={() => setSelectedEvent(event)}
-                />
-              </div>
-            ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {events.map((event) => (
+          <div key={event.id}>
+            <EventCard {...event} />
           </div>
-        </div>
-
-        {/* Detail View - Right Side */}
-        <div className="w-1/2 overflow-y-auto">
-          {selectedEvent && <EventDetailView event={selectedEvent} />}
-        </div>
+        ))}
       </div>
     </div>
   )
