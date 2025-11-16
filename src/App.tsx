@@ -4,8 +4,8 @@ import { Header } from './components/Header';
 import { SignIn } from './components/SignIn';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Home } from './pages/Home';
-import { Events } from './pages/Events';
-import { Communities } from './pages/Communities';
+import { Attending } from './pages/Attending';
+import { Hosting } from './pages/Hosting';
 
 function App() {
   return (
@@ -26,26 +26,26 @@ function App() {
           }
         />
         <Route
-          path="/events"
+          path="/attending"
           element={
             <ProtectedRoute>
               <div className="h-screen flex flex-col overflow-hidden">
                 <Header />
                 <div className="flex-1 overflow-auto">
-                  <Events />
+                  <Attending />
                 </div>
               </div>
             </ProtectedRoute>
           }
         />
         <Route
-          path="/communities"
+          path="/hosting"
           element={
             <ProtectedRoute>
               <div className="h-screen flex flex-col overflow-hidden">
                 <Header />
                 <div className="flex-1 overflow-auto">
-                  <Communities />
+                  <Hosting />
                 </div>
               </div>
             </ProtectedRoute>
