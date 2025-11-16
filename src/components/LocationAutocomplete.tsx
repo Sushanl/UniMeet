@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Autocomplete, useJsApiLoader } from '@react-google-maps/api'
 import { TextField, Text } from '@radix-ui/themes'
 
@@ -19,6 +19,10 @@ interface LocationAutocompleteProps {
 export function LocationAutocomplete({ value, onLocationChange, required }: LocationAutocompleteProps) {
   const [autocomplete, setAutocomplete] = useState<google.maps.places.Autocomplete | null>(null)
   const [inputValue, setInputValue] = useState(value)
+
+  useEffect(() => {
+    setInputValue(value)
+  }, [value])
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
