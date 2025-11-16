@@ -1,6 +1,8 @@
 import './App.css';
 import { Header } from './components/Header';
 import { MainLayout } from './components/MainLayout';
+import { SignIn } from './components/SignIn';
+import { useAuth } from './lib/authContext';
 import type { EventCardProps } from './components/EventCard';
 
 const mockEvents: EventCardProps[] = [
@@ -57,6 +59,20 @@ const mockEvents: EventCardProps[] = [
 ];
 
 function App() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-white">
+        <div className="text-black">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <SignIn />;
+  }
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <Header />
