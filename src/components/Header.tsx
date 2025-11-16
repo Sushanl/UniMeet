@@ -16,10 +16,10 @@ export function Header() {
                 Events
               </a>
               <a href="#" className="text-gray-700 hover:text-gray-900 font-medium">
-                Communities
+                Attending
               </a>
               <a href="#" className="text-gray-700 hover:text-gray-900 font-medium">
-                Messages
+                Hosting
               </a>
             </Flex>
           </nav>
