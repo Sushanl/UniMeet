@@ -10,11 +10,13 @@ interface EventDetailViewProps {
   event: EventCardProps;
   onBack?: () => void;
   onAttendeeChange?: () => void;
+  disableAnimation?: boolean;
+  initialAttendanceStatus?: boolean;
 }
 
-export function EventDetailView({ event, onBack, onAttendeeChange }: EventDetailViewProps) {
+export function EventDetailView({ event, onBack, onAttendeeChange, disableAnimation = false, initialAttendanceStatus }: EventDetailViewProps) {
   const { user } = useAuth();
-  const [isAttending, setIsAttending] = useState(false);
+  const [isAttending, setIsAttending] = useState(initialAttendanceStatus ?? false);
   const [isLoading, setIsLoading] = useState(false);
   const [attendeeCount, setAttendeeCount] = useState(event.attendees);
 
@@ -134,16 +136,13 @@ export function EventDetailView({ event, onBack, onAttendeeChange }: EventDetail
     }
   };
 
+  const CardWrapper = disableAnimation ? 'div' : motion.div;
+  const ContentWrapper = disableAnimation ? 'div' : motion.div;
+
   return (
     <div className="h-full flex flex-col">
       {onBack && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-          className="p-4 pb-0"
-        >
+        <div className="p-4 pb-0">
           <Button
             variant="ghost"
             onClick={onBack}
@@ -152,21 +151,23 @@ export function EventDetailView({ event, onBack, onAttendeeChange }: EventDetail
             <ArrowLeft size={20} />
             Back to events
           </Button>
-        </motion.div>
+        </div>
       )}
 
       <Card asChild className="overflow-hidden flex-1">
-        <motion.div
-          layoutId={`event-${event.id}`}
-          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+        <CardWrapper
+          {...(!disableAnimation && {
+            layoutId: `event-${event.id}`,
+            transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+          })}
         >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{
-              duration: 0.1
-            }}
+          <ContentWrapper
+            {...(!disableAnimation && {
+              initial: { opacity: 0 },
+              animate: { opacity: 1 },
+              exit: { opacity: 0 },
+              transition: { duration: 0.1 }
+            })}
           >
             <div className="aspect-video w-full overflow-hidden bg-gray-200">
               <img
@@ -269,8 +270,8 @@ export function EventDetailView({ event, onBack, onAttendeeChange }: EventDetail
                 </Text>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </ContentWrapper>
+        </CardWrapper>
       </Card>
     </div>
   );

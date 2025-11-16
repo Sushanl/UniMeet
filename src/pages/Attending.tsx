@@ -2,14 +2,17 @@ import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '../lib/useAuth'
 import { supabase } from '../lib/supabaseClient'
 import { EventCard, type EventCardProps, type EventType } from '../components/EventCard'
+import { EventDetailView } from '../components/EventDetailView'
 import { useNavigate } from 'react-router-dom'
-import { Text } from '@radix-ui/themes'
+import { Text, Dialog } from '@radix-ui/themes'
 
 export function Attending() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [events, setEvents] = useState<EventCardProps[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedEvent, setSelectedEvent] = useState<EventCardProps | null>(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const fetchEvents = useCallback(async () => {
     if (!user) return
@@ -111,6 +114,15 @@ export function Attending() {
     fetchEvents()
   }, [user, navigate, fetchEvents])
 
+  const handleEventClick = (event: EventCardProps) => {
+    setSelectedEvent(event)
+    setIsDialogOpen(true)
+  }
+
+  const handleAttendeeChange = () => {
+    fetchEvents()
+  }
+
   if (loading) {
     return (
       <div className="p-8">
@@ -139,10 +151,40 @@ export function Attending() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {events.map((event) => (
           <div key={event.id}>
-            <EventCard {...event} />
+            <EventCard {...event} onClick={() => handleEventClick(event)} />
           </div>
         ))}
       </div>
+
+      <Dialog.Root open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <Dialog.Content
+          size="4"
+          maxWidth="600px"
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: 'white',
+            padding: '0',
+            borderRadius: '8px',
+            boxShadow: '0 10px 38px -10px rgba(22, 23, 24, 0.35), 0 10px 20px -15px rgba(22, 23, 24, 0.2)',
+            zIndex: 1000,
+            maxHeight: '90vh',
+            overflowY: 'auto',
+            animation: 'none'
+          }}
+        >
+          {selectedEvent && (
+            <EventDetailView
+              event={selectedEvent}
+              onAttendeeChange={handleAttendeeChange}
+              disableAnimation={true}
+              initialAttendanceStatus={true}
+            />
+          )}
+        </Dialog.Content>
+      </Dialog.Root>
     </div>
   )
 }
