@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "setup": "pnpm i ; cp CONDUCTOR_ROOT_PATH/.env .env",
+    "setup": "pnpm i ; cp $CONDUCTOR_ROOT_PATH/.env .env",
     "run": "pnpm dev"
   }
 }
