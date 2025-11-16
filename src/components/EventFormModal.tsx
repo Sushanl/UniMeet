@@ -3,6 +3,7 @@ import { Button, Dialog, TextField, TextArea, Select, Flex, Text } from '@radix-
 import { X } from 'lucide-react'
 import { supabase } from '../lib/supabaseClient'
 import type { EventCardProps, EventType } from './EventCard'
+import { LocationAutocomplete } from './LocationAutocomplete'
 
 interface EventFormData {
   name: string
@@ -26,6 +27,20 @@ interface EventFormModalProps {
   onSuccess: () => void
 }
 
+const initialFormData: EventFormData = {
+  name: '',
+  description: '',
+  type: 'social',
+  location_name: '',
+  location_lat: 0,
+  location_long: 0,
+  date: '',
+  time: '',
+  capacity: 0,
+  club_name: '',
+  club_url: ''
+}
+
 export function EventFormModal({
   isOpen,
   onOpenChange,
@@ -33,24 +48,12 @@ export function EventFormModal({
   userId,
   onSuccess
 }: EventFormModalProps) {
-  const [formData, setFormData] = useState<EventFormData>({
-    name: '',
-    description: '',
-    type: 'social',
-    location_name: '',
-    location_lat: 0,
-    location_long: 0,
-    date: '',
-    time: '',
-    capacity: 0,
-    club_name: '',
-    club_url: ''
-  })
+  const [formData, setFormData] = useState<EventFormData>(initialFormData)
 
   // Load event data when editing
   useEffect(() => {
-    if (editingEvent && isOpen) {
-      const loadEventData = async () => {
+    const loadEventData = async () => {
+      if (editingEvent && isOpen) {
         try {
           const { data: eventData, error } = await supabase
             .from('Events')
@@ -84,25 +87,13 @@ export function EventFormModal({
         } catch (error) {
           console.error('Error fetching event data:', error)
         }
+      } else if (!editingEvent && isOpen) {
+        // Reset form for new event
+        setFormData(initialFormData)
       }
-
-      loadEventData()
-    } else if (!editingEvent && isOpen) {
-      // Reset form for new event
-      setFormData({
-        name: '',
-        description: '',
-        type: 'social',
-        location_name: '',
-        location_lat: 0,
-        location_long: 0,
-        date: '',
-        time: '',
-        capacity: 0,
-        club_name: '',
-        club_url: ''
-      })
     }
+
+    loadEventData()
   }, [editingEvent, isOpen])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -238,42 +229,18 @@ export function EventFormModal({
             </div>
 
             <div>
-              <Text size="2" weight="medium" mb="2" as="div">Location Name</Text>
-              <TextField.Root
-                placeholder="Location Name"
+              <Text size="2" weight="medium" mb="2" as="div">Location</Text>
+              <LocationAutocomplete
                 value={formData.location_name}
-                onChange={(e) => setFormData({ ...formData, location_name: e.target.value })}
+                onLocationChange={(location) => setFormData({
+                  ...formData,
+                  location_name: location.name,
+                  location_lat: location.lat,
+                  location_long: location.lng
+                })}
                 required
-                size="3"
               />
             </div>
-
-            <Flex gap="2">
-              <div style={{ flex: 1 }}>
-                <Text size="2" weight="medium" mb="2" as="div">Latitude</Text>
-                <TextField.Root
-                  type="number"
-                  step="any"
-                  placeholder="Latitude"
-                  value={formData.location_lat || ''}
-                  onChange={(e) => setFormData({ ...formData, location_lat: parseFloat(e.target.value) || 0 })}
-                  required
-                  size="3"
-                />
-              </div>
-              <div style={{ flex: 1 }}>
-                <Text size="2" weight="medium" mb="2" as="div">Longitude</Text>
-                <TextField.Root
-                  type="number"
-                  step="any"
-                  placeholder="Longitude"
-                  value={formData.location_long || ''}
-                  onChange={(e) => setFormData({ ...formData, location_long: parseFloat(e.target.value) || 0 })}
-                  required
-                  size="3"
-                />
-              </div>
-            </Flex>
 
             <Flex gap="2">
               <div style={{ flex: 1 }}>
