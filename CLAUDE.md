@@ -19,6 +19,8 @@ UniMeet is a React + TypeScript application built with Vite. The project uses:
 - `pnpm lint` - Run ESLint on the codebase
 - `pnpm preview` - Preview production build locally
 
+RUN PNPM BUILD AND LINT BEFORE RETURNING TO ME WITH CHANGES
+
 ### Important Notes
 - Always use `pnpm` for package management (not npm or yarn)
 - The build command includes TypeScript checking before building
