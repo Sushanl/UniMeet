@@ -42,6 +42,7 @@ create table public."Events" (
   capacity integer null,
   club_url text null,
   owner_user uuid null,
+  image_url text null,
   constraint Events_pkey primary key (id),
   constraint Events_owner_user_fkey foreign KEY (owner_user) references auth.users (id)
 ) TABLESPACE pg_default;
