@@ -4,11 +4,20 @@ import { getAllEvents } from '../lib/db/events';
 import { transformEventsToCards } from '../lib/db/transformers';
 import { seedDatabase } from '../lib/db/seed';
 import type { EventCardProps } from '../components/EventCard';
+import type { SearchFilters } from '../components/SearchBar';
+import { filterEvents } from '../lib/filterEvents';
 
 export function Home() {
   const [events, setEvents] = useState<EventCardProps[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filters, setFilters] = useState<SearchFilters>({
+    searchTerm: '',
+    timeFilter: 'any',
+    locationFilter: 'all',
+    eventTypeFilter: 'all',
+    capacityFilter: 'all',
+  });
 
   useEffect(() => {
     async function fetchEvents() {
@@ -51,5 +60,7 @@ export function Home() {
     );
   }
 
-  return <MainLayout events={events} />;
+  const filteredEvents = filterEvents(events, filters);
+
+  return <MainLayout events={filteredEvents} allEvents={events} filters={filters} onFiltersChange={setFilters} />;
 }
