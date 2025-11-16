@@ -1,14 +1,139 @@
 import { motion } from 'motion/react';
-import { ArrowLeft, Clock, MapPin, Users, Calendar } from 'lucide-react';
+import { ArrowLeft, Clock, MapPin, Users, Calendar, Check } from 'lucide-react';
 import { Card, Flex, Text, Badge, Button } from '@radix-ui/themes';
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabaseClient';
+import { useAuth } from '../lib/useAuth';
 import type { EventCardProps } from './EventCard';
 
 interface EventDetailViewProps {
   event: EventCardProps;
   onBack: () => void;
+  onAttendeeChange?: () => void;
 }
 
-export function EventDetailView({ event, onBack }: EventDetailViewProps) {
+export function EventDetailView({ event, onBack, onAttendeeChange }: EventDetailViewProps) {
+  const { user } = useAuth();
+  const [isAttending, setIsAttending] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [attendeeCount, setAttendeeCount] = useState(event.attendees);
+
+  // Check if user is already attending
+  useEffect(() => {
+    const checkAttendance = async () => {
+      if (!user) {
+        setIsAttending(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('Attendees')
+          .select('*')
+          .eq('event_id', parseInt(event.id))
+          .eq('user_id', user.id)
+          .single();
+
+        if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+          console.error('Error checking attendance:', error);
+        } else {
+          setIsAttending(!!data);
+        }
+      } catch (error) {
+        console.error('Error checking attendance:', error);
+      }
+    };
+
+    checkAttendance();
+  }, [user, event.id]);
+
+  // Fetch current attendee count
+  useEffect(() => {
+    const fetchAttendeeCount = async () => {
+      try {
+        const { count } = await supabase
+          .from('Attendees')
+          .select('*', { count: 'exact', head: true })
+          .eq('event_id', parseInt(event.id));
+
+        if (count !== null) {
+          setAttendeeCount(count);
+        }
+      } catch (error) {
+        console.error('Error fetching attendee count:', error);
+      }
+    };
+
+    fetchAttendeeCount();
+  }, [event.id, isAttending]);
+
+  const handleAttend = async (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    if (!user) {
+      alert('Please sign in to attend events');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      if (isAttending) {
+        // Remove attendance
+        const { error } = await supabase
+          .from('Attendees')
+          .delete()
+          .eq('event_id', parseInt(event.id))
+          .eq('user_id', user.id);
+
+        if (error) {
+          console.error('Error removing attendance:', error);
+          alert('Failed to leave event');
+        } else {
+          setIsAttending(false);
+          setAttendeeCount(prev => Math.max(0, prev - 1));
+          // Update parent after state is set
+          requestAnimationFrame(() => {
+            onAttendeeChange?.();
+          });
+        }
+      } else {
+        // Add attendance
+        const { error } = await supabase
+          .from('Attendees')
+          .insert([
+            {
+              event_id: parseInt(event.id),
+              user_id: user.id
+            }
+          ]);
+
+        if (error) {
+          console.error('Error adding attendance:', error);
+          if (error.code === '23505') { // Unique constraint violation
+            alert('You are already attending this event');
+          } else {
+            alert('Failed to attend event');
+          }
+        } else {
+          setIsAttending(true);
+          setAttendeeCount(prev => prev + 1);
+          // Update parent after state is set
+          requestAnimationFrame(() => {
+            onAttendeeChange?.();
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling attendance:', error);
+      alert('Failed to update attendance');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="h-full p-4 flex flex-col">
       <motion.div
@@ -78,10 +203,43 @@ export function EventDetailView({ event, onBack }: EventDetailViewProps) {
                 <Flex align="center" gap="3">
                   <Users size={20} className="text-gray-500" />
                   <Text size="3" className="text-gray-700">
-                    {event.attendees} people attending
+                    {attendeeCount} people attending
                   </Text>
                 </Flex>
               </Flex>
+
+              <div className="mb-6">
+                {user ? (
+                  <Button
+                    size="3"
+                    variant={isAttending ? "soft" : "solid"}
+                    color={isAttending ? "green" : "blue"}
+                    onClick={(e) => handleAttend(e)}
+                    disabled={isLoading}
+                    type="button"
+                    style={{ width: '100%' }}
+                  >
+                    {isAttending ? (
+                      <>
+                        <Check size={16} />
+                        Attending
+                      </>
+                    ) : (
+                      'Attend Event'
+                    )}
+                  </Button>
+                ) : (
+                  <Button
+                    size="3"
+                    variant="soft"
+                    color="gray"
+                    disabled
+                    style={{ width: '100%' }}
+                  >
+                    Sign in to attend
+                  </Button>
+                )}
+              </div>
 
               <div className="mb-6">
                 <Text size="3" weight="medium" className="block mb-3 text-gray-900">
