@@ -4,7 +4,7 @@ import './index.css'
 import "@radix-ui/themes/styles.css";
 import App from './App.tsx'
 import { Theme } from '@radix-ui/themes/dist/cjs/components/index.js';
-import { AuthProvider } from './lib/authContext'
+import { AuthProvider } from './lib/AuthProvider'
 
 try {
   const rootElement = document.getElementById('root')
