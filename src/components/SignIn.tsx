@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button, TextField, Card, Heading, Text } from '@radix-ui/themes'
-import { useAuth } from '../lib/authContext'
+import { useAuth } from '../lib/useAuth'
 
 export function SignIn() {
+  const navigate = useNavigate()
   const [isSignUp, setIsSignUp] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -40,8 +42,9 @@ export function SignIn() {
       if (error) {
         setError(error.message)
         setLoading(false)
+      } else {
+        navigate('/')
       }
-      // On success, auth state updates automatically and App.tsx will show the main content
     }
   }
 
